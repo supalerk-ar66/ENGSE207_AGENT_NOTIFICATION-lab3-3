@@ -869,36 +869,31 @@
         
         <!-- ... -->
 
-<script>
-    function sendMessage() {
-      const fromAgentCode = document.getElementById('chat-input-new').value;
-      const toAgentCode = $("#agent").val(); // Get the current connected agent code
-      const message = document.getElementById('chat-input').value;
+    <script>
+        function sendMessage() {
+        const fromAgentCode = document.getElementById('chat-input-new').value;
+        const toAgentCode = $("#agent").val(); // Get the current connected agent code
+        const message = document.getElementById('chat-input').value;
   
-      const payload = {
-        FromAgentCode: fromAgentCode,
-        ToAgentcode: toAgentCode,
-        Message: message
-      };
+        const payload = {
+            FromAgentCode: fromAgentCode,
+            ToAgentcode: toAgentCode,
+            Message: message
+            };
   
-      const token = '00D5D0000001aaZ!ARgAQGuQzp.mOv2jmhXkfIsjgywpCIh7.HZpc6vED1LCbc90DTaVDJwdNqbTW5r4uZicv8AFfkOE1ialqnR8UN5.wnAg3O7h';
+        const token = '00D5D0000001aaZ!ARgAQGuQzp.mOv2jmhXkfIsjgywpCIh7.HZpc6vED1LCbc90DTaVDJwdNqbTW5r4uZicv8AFfkOE1ialqnR8UN5.wnAg3O7h';
   
-      fetch('https://192.168.56.1:8443/api/v1/postSendMessage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        fetch('https://192.168.56.1:8443/api/v1/postSendMessage', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+         },
         body: JSON.stringify(payload)
       })
       .then(response => response.json())
       .then(data => {
-        console.log('Success:', data);
-        if (data.error) {
-          alert('Error: ' + data.errMessage);
-        } else {
-          alert('Message sent successfully!');
-        }
+        console.log('Success:', data);      
       })
       .catch(error => {
         console.error('Error:', error);
