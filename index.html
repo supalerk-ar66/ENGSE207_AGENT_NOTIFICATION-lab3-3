@@ -821,7 +821,7 @@
                               
                                   $.ajax({
                                     type: "POST",
-                                    url: "https://192.168.56.1:8443/api/v1/postOnlineAgentStatus",
+                                    url: `${APIServer}/postOnlineAgentStatus`,
                                     data: JSON.stringify({
                                       AgentCode: agentCode,
                                       AgentName: agentName,
@@ -865,11 +865,53 @@
                 <input type="text" id="chat-input" placeholder="Type a message..." style="flex: 3; min-width: 0; margin-right: 5px;">
                 <button id="chat-send" class="btn btn-primary btn-sm" style="flex-shrink: 0;" onclick="sendMessage()">Send</button>
                 </div>                                               
-        </div>  
-        
-        <!-- ... -->
+        </div> 
+         
+      <script>
+        function sendMessage() {
+            const fromAgentCode = $("#agent").val(); // Get the current connected agent code
+            const toAgentCode = document.getElementById('chat-input-new').value; // Get the agent code to send the message to
+            const message = document.getElementById('chat-input').value;
+          
+            if (fromAgentCode === toAgentCode) {
+              alert("You cannot send a message to yourself.");
+              return;
+            }
+          
+            const payload = {
+              FromAgentCode: fromAgentCode,
+              ToAgentCode: toAgentCode,
+              Message: message
+            };
 
-    <script>
+          console.log(fromAgentCode,toAgentCode,message);
+
+            const token = '00D5D0000001aaZ!ARgAQGuQzp.mOv2jmhXkfIsjgywpCIh7.HZpc6vED1LCbc90DTaVDJwdNqbTW5r4uZicv8AFfkOE1ialqnR8UN5.wnAg3O7h';
+          
+            fetch(`${APIServer}/postSendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+            body: JSON.stringify(payload)
+            })
+            .then(response => {
+            if (!response.ok) {
+            return response.json().then(errorData => {
+            throw new Error(errorData.message || 'Unknown error');
+            });
+        }
+        return response.json();
+            })
+        .then(data => {
+        console.log('Success:', data);       
+        })
+        .catch(error => {
+        console.error('Error:', error);
+        alert(`Request failed: ${error.message}`);
+        });
+         }
+        </script>
+        
+    <!-- <script>
         function sendMessage() {
         const fromAgentCode = document.getElementById('chat-input-new').value;
         const toAgentCode = $("#agent").val(); // Get the current connected agent code
@@ -900,7 +942,7 @@
         alert(`Request failed with status: ${error.message}`);
       });
     }
-  </script>
+  </script> -->
   
         <div id="display">
             <div class="row">
